@@ -7,6 +7,7 @@ export default function InputTextField({
   placeholderText,
   keyboardType,
   onChangeText,
+  value,
 }) {
   return (
     <View>
@@ -30,6 +31,7 @@ export default function InputTextField({
           placeholder={placeholderText}
           keyboardType={keyboardType}
           onChangeText={onChangeText}
+          defaultValue={value}
         />
       </View>
     </View>

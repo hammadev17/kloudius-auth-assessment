@@ -5,6 +5,7 @@ import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 export default function PasswordInputField({
   placeholderText,
   onChangeText,
+  value,
   onPressedVisibilityIcon,
 }) {
   return (
@@ -29,6 +30,8 @@ export default function PasswordInputField({
           placeholder={placeholderText}
           keyboardType="default"
           onChangeText={onChangeText}
+          defaultValue={value}
+          secureTextEntry={true}
         />
         <TouchableOpacity onPress={onPressedVisibilityIcon}>
           <MaterialIcons

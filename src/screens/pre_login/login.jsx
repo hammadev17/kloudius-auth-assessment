@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   Image,
+  Alert,
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
@@ -15,9 +16,25 @@ import CustomSeparator from '../../components/auth/CustomSeparator';
 
 const logoImg = require('../../assets/login.jpg');
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
+  const [userName, setUsername] = useState('Hammad Lodhi');
+  const [emailId, setEmailId] = useState('');
+  const [passowrd, setPassword] = useState('');
+
+  const handlePasswordChange = newText => {
+    setPassword(newText);
+    console.log(newText);
+  };
+
+  const handleEmailChange = newText => {
+    setEmailId(newText);
+    console.log(newText);
+  };
+
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
+    <SafeAreaView
+      style={{ flex: 1, justifyContent: 'center', backgroundColor: '#fff' }}
+    >
       <KeyboardAwareScrollView
         style={{ paddingHorizontal: 25 }}
         showsVerticalScrollIndicator={false}
@@ -45,12 +62,14 @@ const LoginScreen = () => {
             iconName={'alternate-email'}
             placeholderText="Email ID"
             keyboardType={'email-address'}
-            onChangeText={() => {}}
+            onChangeText={handleEmailChange}
+            value={emailId}
           />
 
           <PasswordInputField
             placeholderText="Password"
-            onChangeText={() => {}}
+            onChangeText={handlePasswordChange}
+            value={passowrd}
             onPressedVisibilityIcon={() => {}}
           />
 
@@ -65,12 +84,27 @@ const LoginScreen = () => {
                 color: '#5053f6',
                 textAlign: 'right',
               }}
+              onPress={() => navigation.navigate('ForgotPassword')}
             >
               Forgot Password?
             </Text>
           </TouchableOpacity>
 
-          <PrimaryButton title="Login" onPressed={() => {}} />
+          <PrimaryButton
+            title="Login"
+            onPressed={() => {
+              console.log('password: ' + passowrd);
+              console.log('email: ' + emailId);
+              if (emailId !== '' && passowrd !== '') {
+                navigation.navigate('Home', {
+                  userName: userName,
+                  emailId: emailId,
+                });
+              } else {
+                Alert.alert('Login', 'Required fields cannot be empty');
+              }
+            }}
+          />
 
           <CustomSeparator title={'or login with'} paddingBottom={10} />
 
@@ -99,6 +133,9 @@ const LoginScreen = () => {
                   fontSize: 18,
                   fontWeight: 800,
                   color: '#5053f6',
+                }}
+                onPress={() => {
+                  navigation.navigate('Register');
                 }}
               >
                 Register

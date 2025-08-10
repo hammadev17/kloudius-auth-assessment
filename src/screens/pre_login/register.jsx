@@ -15,9 +15,11 @@ import CustomSeparator from '../../components/auth/CustomSeparator';
 
 const logoImg = require('../../assets/register.jpg');
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
+    <SafeAreaView
+      style={{ flex: 1, justifyContent: 'center', backgroundColor: '#fff' }}
+    >
       <KeyboardAwareScrollView
         style={{ paddingHorizontal: 25 }}
         showsVerticalScrollIndicator={false}
@@ -95,6 +97,9 @@ const RegisterScreen = () => {
                   fontSize: 18,
                   fontWeight: 800,
                   color: '#5053f6',
+                }}
+                onPress={() => {
+                  navigation.goBack();
                 }}
               >
                 Login

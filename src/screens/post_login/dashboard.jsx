@@ -4,13 +4,13 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import PrimaryButton from '../../components/PrimaryButton';
 
-const DashboardSreen = () => {
-  //const { userName, email } = route.params;
-  const userName = 'Hammad Lodhi';
-  const emailId = 'hammadkhan1789@gmail.com';
-  const insets = useSafeAreaInsets();
+const DashboardSreen = ({ route }) => {
+  const navigation = useNavigation();
+  const { userName, emailId } = route.params;
+
   return (
     <SafeAreaView
       edges={['top']}
@@ -52,7 +52,7 @@ const DashboardSreen = () => {
         borderRadius={0}
         bottomPadding={0}
         contentPaddingVertical={20}
-        onPressed={() => {}}
+        onPressed={() => navigation.goBack()}
       />
     </SafeAreaView>
   );
