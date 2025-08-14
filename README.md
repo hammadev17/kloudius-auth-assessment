@@ -11,9 +11,9 @@ User Authentication App is a React Native mobile application offering intuitive 
 
 App uses the **React Context API** to manage global state across the app. This modular approach keeps the state predictable and avoids prop drilling, making the app scalable for larger features.
 
-- **context/**: Provides shared application state via React Context Providers.
-- **authcontext/**: AuthContext shares the user authentication across the app for managing Login and Logout states
-- **AsyncStorage/**: Storage is used to save user data and access it accross the app
+- **context**: Provides shared application state via React Context Providers.
+- **authcontext**: AuthContext shares the user authentication across the app for managing Login and Logout states
+- **AsyncStorage**: Storage is used to save user data and access it accross the app
 
 ---
 
@@ -130,10 +130,9 @@ yarn ios
 
 ## **Demo**
 
-[![Watch the video](<img width="440" height="958" alt="userauthapp" src="https://github.com/user-attachments/assets/5bb608e3-f511-4db1-a577-56cf0b10b9f1" />)](https://github.com/user-attachments/assets/64e133f7-d81d-4bbb-8812-6417acb929d8)
+[![Watch the video](https://github.com/user-attachments/assets/64e133f7-d81d-4bbb-8812-6417acb929d8)
 
-## Congratulations! 🏆 you mad![Uploading userauthapp.png…]()
-e it 🥳 👏
+## Congratulations! 🏆 you made it 🥳 👏
 
 ## Authors
 
