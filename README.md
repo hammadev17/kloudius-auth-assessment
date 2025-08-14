@@ -130,7 +130,7 @@ yarn ios
 
 ## **Demo**
 
-[![Watch the video](https://github.com/user-attachments/assets/64e133f7-d81d-4bbb-8812-6417acb929d8)
+[![Watch the video](<img width="440" height="958" alt="userauthapp" src="https://github.com/user-attachments/assets/032ec746-eb1f-4177-9db6-9774b0789cd2" />)](https://github.com/user-attachments/assets/64e133f7-d81d-4bbb-8812-6417acb929d8)
 
 ## Congratulations! 🏆 you made it 🥳 👏
 
