@@ -1,15 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Touchable, TouchableOpacity } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import PrimaryButton from '../../components/PrimaryButton';
+import { AuthContext } from '../../contexts/AuthContext';
 
-const DashboardSreen = ({ route }) => {
-  const navigation = useNavigation();
-  const { userName, emailId } = route.params;
+const DashboardSreen = ({}) => {
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <SafeAreaView
@@ -24,6 +21,7 @@ const DashboardSreen = ({ route }) => {
           flex: 1,
           justifyContent: 'center',
           alignContent: 'center',
+          paddingHorizontal: 25,
         }}
       >
         <Text
@@ -34,7 +32,7 @@ const DashboardSreen = ({ route }) => {
             paddingVertical: 5,
           }}
         >
-          {userName}
+          Hello, {user.name}
         </Text>
         <Text
           style={{
@@ -44,7 +42,7 @@ const DashboardSreen = ({ route }) => {
             paddingVertical: 5,
           }}
         >
-          {emailId}
+          {user.email}
         </Text>
       </View>
       <PrimaryButton
@@ -52,7 +50,9 @@ const DashboardSreen = ({ route }) => {
         borderRadius={0}
         bottomPadding={0}
         contentPaddingVertical={20}
-        onPressed={() => navigation.goBack()}
+        onPressed={() => {
+          logout();
+        }}
       />
     </SafeAreaView>
   );

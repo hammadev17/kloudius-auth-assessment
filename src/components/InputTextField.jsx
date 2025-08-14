@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, Text, Keyboard } from 'react-native';
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 
 export default function InputTextField({

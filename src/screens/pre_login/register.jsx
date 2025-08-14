@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -12,10 +12,95 @@ import PasswordInputField from '../../components/auth/PasswordInputField';
 import PrimaryButton from '../../components/PrimaryButton';
 import SocialIconsComboView from '../../components/auth/SocialIconsComboView';
 import CustomSeparator from '../../components/auth/CustomSeparator';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const logoImg = require('../../assets/register.jpg');
 
 const RegisterScreen = ({ navigation }) => {
+  const [fullName, setFullName] = useState(null);
+  const [emailId, setEmailId] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [errorName, setErrorName] = useState(null);
+  const [errorEmail, setErrorEmail] = useState(null);
+  const [errorPassword, setErrorPassword] = useState(null);
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState(null);
+
+  const { register } = useContext(AuthContext);
+
+  const handleFullName = newText => {
+    setFullName(newText);
+  };
+
+  const handleEmailChange = newText => {
+    setEmailId(newText);
+  };
+
+  const handlePasswordChange = newText => {
+    setPassword(newText);
+  };
+
+  const handleConfirmPasswordChange = newText => {
+    setConfirmPassword(newText);
+  };
+
+  const handlePasswordFieldVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+    return passwordVisible;
+  };
+
+  const handleConfirmPasswordFieldVisibility = () => {
+    setConfirmPasswordVisible(!confirmPasswordVisible);
+    return confirmPasswordVisible;
+  };
+
+  const handleRegister = async () => {
+    console.log('Fullname:' + fullName);
+    console.log('email:' + emailId);
+    console.log('password:' + password);
+    console.log('confirm password:' + confirmPassword);
+
+    if (
+      fullName != null &&
+      emailId !== null &&
+      password !== null &&
+      confirmPassword != null &&
+      password == confirmPassword
+    ) {
+      try {
+        await register(fullName, emailId);
+      } catch (e) {
+        console.log(e.message);
+        Alert.alert('Register Error', e);
+      }
+      return;
+    }
+    setErrorName(
+      fullName == null || fullName == ''
+        ? 'Required fields cannot be empty'
+        : null,
+    );
+    setErrorEmail(
+      emailId == null || emailId == ''
+        ? 'Required fields cannot be empty'
+        : null,
+    );
+    setErrorPassword(
+      password == null || password == ''
+        ? 'Required fields cannot be empty'
+        : null,
+    );
+    if (confirmPassword == null || confirmPassword == '') {
+      setErrorConfirmPassword('Required fields cannot be empty');
+    } else if (confirmPassword !== password) {
+      setErrorConfirmPassword("Password doesn't match with confirm password");
+    } else {
+      setErrorConfirmPassword(null);
+    }
+  };
+
   return (
     <SafeAreaView
       style={{ flex: 1, justifyContent: 'center', backgroundColor: '#fff' }}
@@ -54,29 +139,49 @@ const RegisterScreen = ({ navigation }) => {
             iconName={'person'}
             placeholderText="Full Name"
             keyboardType={'default'}
-            onChangeText={() => {}}
+            onChangeText={handleFullName}
           />
+          {errorName && (
+            <Text style={{ fontSize: 12, fontWeight: 300, color: 'red' }}>
+              {errorName}
+            </Text>
+          )}
 
           <InputTextField
             iconName={'alternate-email'}
             placeholderText="Email ID"
             keyboardType={'email-address'}
-            onChangeText={() => {}}
+            onChangeText={handleEmailChange}
           />
+          {errorEmail && (
+            <Text style={{ fontSize: 12, fontWeight: 300, color: 'red' }}>
+              {errorEmail}
+            </Text>
+          )}
 
           <PasswordInputField
             placeholderText="Password"
-            onChangeText={() => {}}
-            onPressedVisibilityIcon={() => {}}
+            onChangeText={handlePasswordChange}
+            onPressedVisibilityIcon={handlePasswordFieldVisibility}
           />
+          {errorPassword && (
+            <Text style={{ fontSize: 12, fontWeight: 300, color: 'red' }}>
+              {errorPassword}
+            </Text>
+          )}
 
           <PasswordInputField
             placeholderText="Confirm Password"
-            onChangeText={() => {}}
-            onPressedVisibilityIcon={() => {}}
+            onChangeText={handleConfirmPasswordChange}
+            onPressedVisibilityIcon={handleConfirmPasswordFieldVisibility}
           />
+          {errorConfirmPassword && (
+            <Text style={{ fontSize: 12, fontWeight: 300, color: 'red' }}>
+              {errorConfirmPassword}
+            </Text>
+          )}
 
-          <PrimaryButton title="Register" onPressed={() => {}} />
+          <PrimaryButton title="Register" onPressed={handleRegister} />
 
           <View
             style={{

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -14,12 +14,20 @@ import PrimaryButton from '../../components/PrimaryButton';
 import SocialIconsComboView from '../../components/auth/SocialIconsComboView';
 import CustomSeparator from '../../components/auth/CustomSeparator';
 
+import { AuthContext } from '../../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const logoImg = require('../../assets/login.jpg');
 
 const LoginScreen = ({ navigation }) => {
   const [userName, setUsername] = useState('Hammad Lodhi');
-  const [emailId, setEmailId] = useState('');
-  const [passowrd, setPassword] = useState('');
+  const [emailId, setEmailId] = useState(null);
+  const [passowrd, setPassword] = useState(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [errorEmail, setErrorEmail] = useState(null);
+  const [errorPassword, setErrorPassword] = useState(null);
+
+  const { login } = useContext(AuthContext);
 
   const handlePasswordChange = newText => {
     setPassword(newText);
@@ -29,6 +37,31 @@ const LoginScreen = ({ navigation }) => {
   const handleEmailChange = newText => {
     setEmailId(newText);
     console.log(newText);
+  };
+
+  const handleLogin = async () => {
+    console.log('password:' + passowrd);
+    console.log('email:' + emailId);
+    if (emailId !== null && passowrd !== null) {
+      try {
+        await login(emailId);
+      } catch (e) {
+        Alert.alert('Login Error', e);
+      }
+    }
+    setErrorEmail(emailId == null ? 'Required fields cannot be empty' : null);
+    setErrorPassword(
+      passowrd == null ? 'Required fields cannot be empty' : null,
+    );
+  };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+  };
+
+  const handlePasswordFieldVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+    return passwordVisible;
   };
 
   return (
@@ -65,13 +98,23 @@ const LoginScreen = ({ navigation }) => {
             onChangeText={handleEmailChange}
             value={emailId}
           />
+          {errorEmail && (
+            <Text style={{ fontSize: 12, fontWeight: 300, color: 'red' }}>
+              {errorEmail}
+            </Text>
+          )}
 
           <PasswordInputField
             placeholderText="Password"
             onChangeText={handlePasswordChange}
             value={passowrd}
-            onPressedVisibilityIcon={() => {}}
+            onPressedVisibilityIcon={handlePasswordFieldVisibility}
           />
+          {errorPassword && (
+            <Text style={{ fontSize: 12, fontWeight: 300, color: 'red' }}>
+              {errorPassword}
+            </Text>
+          )}
 
           <TouchableOpacity
             style={{
@@ -84,7 +127,7 @@ const LoginScreen = ({ navigation }) => {
                 color: '#5053f6',
                 textAlign: 'right',
               }}
-              onPress={() => navigation.navigate('ForgotPassword')}
+              onPress={() => handleForgotPassword}
             >
               Forgot Password?
             </Text>
@@ -93,16 +136,7 @@ const LoginScreen = ({ navigation }) => {
           <PrimaryButton
             title="Login"
             onPressed={() => {
-              console.log('password: ' + passowrd);
-              console.log('email: ' + emailId);
-              if (emailId !== '' && passowrd !== '') {
-                navigation.navigate('Home', {
-                  userName: userName,
-                  emailId: emailId,
-                });
-              } else {
-                Alert.alert('Login', 'Required fields cannot be empty');
-              }
+              handleLogin();
             }}
           />
 
