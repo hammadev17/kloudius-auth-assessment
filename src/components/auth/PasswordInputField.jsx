@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 
 export default function PasswordInputField({
@@ -8,6 +8,10 @@ export default function PasswordInputField({
   value,
   onPressedVisibilityIcon,
 }) {
+  const [secureTextVisibility, setSecureTextVisibility] = useState(true);
+  const handleSecureTextVisibility = () => {
+    setSecureTextVisibility(onPressedVisibilityIcon);
+  };
   return (
     <View>
       <View
@@ -31,9 +35,9 @@ export default function PasswordInputField({
           keyboardType="default"
           onChangeText={onChangeText}
           defaultValue={value}
-          secureTextEntry={true}
+          secureTextEntry={secureTextVisibility}
         />
-        <TouchableOpacity onPress={onPressedVisibilityIcon}>
+        <TouchableOpacity onPress={handleSecureTextVisibility}>
           <MaterialIcons
             name="visibility"
             size={20}

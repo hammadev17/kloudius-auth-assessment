@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Alert } from 'react-native';
-import PrimaryButton from '../../components/PrimaryButton';
-import EmailInputField from '../../components/InputTextField';
+import PrimaryButton from '../../components/PrimaryButton.jsx';
+import EmailInputField from '../../components/InputTextField.jsx';
 
 const ForgotPassword = ({ navigation }) => {
   return (

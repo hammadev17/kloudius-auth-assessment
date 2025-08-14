@@ -1,15 +1,14 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import LoginScreen from '../screens/pre_login/Login';
-import RegisterScreen from '../screens/pre_login/Register';
-import ForgotPassword from '../screens/pre_login/ForgotPassword';
-import DashboardSreen from '../screens/post_login/Dashboard';
+import LoginScreen from '../screens/pre_login/login.jsx';
+import RegisterScreen from '../screens/pre_login/register.jsx';
+import ForgotPassword from '../screens/pre_login/ForgotPassword.jsx';
 const NavStack = createNativeStackNavigator();
 
 const AuthStack = () => {
   return (
-    <NavStack.Navigator>
+    <NavStack.Navigator initialRouteName="Login">
       <NavStack.Screen
         name="Login"
         component={LoginScreen}
@@ -28,11 +27,6 @@ const AuthStack = () => {
           headerTintColor: '#111',
           headerBackButtonDisplayMode: 'minimal',
         }}
-      />
-      <NavStack.Screen
-        name="Home"
-        component={DashboardSreen}
-        options={{ headerShown: false }}
       />
     </NavStack.Navigator>
   );
