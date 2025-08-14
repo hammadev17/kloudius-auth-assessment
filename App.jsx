@@ -6,7 +6,7 @@
  */
 
 import { AuthProvider } from './src/contexts/AuthContext.js';
-import AppNav from './src/navigation/AppNav';
+import AppNav from './src/navigation/AppNav.jsx';
 
 function App() {
   return (

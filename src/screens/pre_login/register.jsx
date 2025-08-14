@@ -7,20 +7,21 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import InputTextField from '../../components/InputTextField';
-import PasswordInputField from '../../components/auth/PasswordInputField';
-import PrimaryButton from '../../components/PrimaryButton';
-import SocialIconsComboView from '../../components/auth/SocialIconsComboView';
-import CustomSeparator from '../../components/auth/CustomSeparator';
-import { AuthContext } from '../../contexts/AuthContext';
+import InputTextField from '../../components/InputTextField.jsx';
+import PasswordInputField from '../../components/auth/PasswordInputField.jsx';
+import PrimaryButton from '../../components/PrimaryButton.jsx';
+import SocialIconsComboView from '../../components/auth/SocialIconsComboView.jsx';
+import CustomSeparator from '../../components/auth/CustomSeparator.jsx';
+import { AuthContext } from '../../contexts/AuthContext.js';
+import { validateEmail } from '../../constants/Constants.js';
 
 const logoImg = require('../../assets/register.jpg');
 
 const RegisterScreen = ({ navigation }) => {
-  const [fullName, setFullName] = useState(null);
-  const [emailId, setEmailId] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
+  const [fullName, setFullName] = useState('');
+  const [emailId, setEmailId] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [errorName, setErrorName] = useState(null);
@@ -57,48 +58,66 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const handleRegister = async () => {
-    console.log('Fullname:' + fullName);
-    console.log('email:' + emailId);
-    console.log('password:' + password);
-    console.log('confirm password:' + confirmPassword);
-
-    if (
-      fullName != null &&
-      emailId !== null &&
-      password !== null &&
-      confirmPassword != null &&
-      password == confirmPassword
-    ) {
+    if (isValidatedForm()) {
       try {
         await register(fullName, emailId);
       } catch (e) {
         console.log(e.message);
         Alert.alert('Register Error', e);
       }
-      return;
     }
-    setErrorName(
-      fullName == null || fullName == ''
-        ? 'Required fields cannot be empty'
-        : null,
-    );
-    setErrorEmail(
-      emailId == null || emailId == ''
-        ? 'Required fields cannot be empty'
-        : null,
-    );
-    setErrorPassword(
-      password == null || password == ''
-        ? 'Required fields cannot be empty'
-        : null,
-    );
-    if (confirmPassword == null || confirmPassword == '') {
+  };
+
+  const isValidatedForm = () => {
+    let isValid = false;
+
+    if (fullName == '') {
+      setErrorName('Required fields cannot be empty');
+      isValid = false;
+    } else {
+      setErrorName(null);
+      isValid = true;
+    }
+
+    const isEmailValid = validateEmail(emailId);
+    if (emailId == '') {
+      setErrorEmail('Required fields cannot be empty');
+      isValid = false;
+    } else if (!isEmailValid) {
+      setErrorEmail('Email format must be valid');
+      isValid = false;
+    } else {
+      setErrorEmail(null);
+      isValid = true;
+    }
+
+    const isPasswordValid = password.length >= 6;
+    if (password == '') {
+      setErrorPassword('Required fields cannot be empty');
+      isValid = false;
+    } else if (!isPasswordValid) {
+      setErrorPassword('Password length must be more then 6');
+      isValid = false;
+    } else {
+      setErrorPassword(null);
+      isValid = true;
+    }
+
+    const isConfirmPasswordValid = confirmPassword.length >= 6;
+    if (confirmPassword == '') {
       setErrorConfirmPassword('Required fields cannot be empty');
+      isValid = false;
+    } else if (!isConfirmPasswordValid) {
+      setErrorConfirmPassword('Password length must be more then 6');
+      isValid = false;
     } else if (confirmPassword !== password) {
       setErrorConfirmPassword("Password doesn't match with confirm password");
+      isValid = false;
     } else {
       setErrorConfirmPassword(null);
+      isValid = true;
     }
+    return isValid;
   };
 
   return (

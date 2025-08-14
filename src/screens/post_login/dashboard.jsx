@@ -1,12 +1,20 @@
 import React, { useContext } from 'react';
-import { View, Text, Touchable, TouchableOpacity } from 'react-native';
+import { View, Text, Touchable, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import PrimaryButton from '../../components/PrimaryButton';
-import { AuthContext } from '../../contexts/AuthContext';
+import PrimaryButton from '../../components/PrimaryButton.jsx';
+import { AuthContext } from '../../contexts/AuthContext.js';
 
-const DashboardSreen = ({}) => {
+const DashboardSreen = () => {
   const { user, logout } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (e) {
+      Alert.alert('Logout Error', e.message);
+    }
+  };
 
   return (
     <SafeAreaView
@@ -50,9 +58,7 @@ const DashboardSreen = ({}) => {
         borderRadius={0}
         bottomPadding={0}
         contentPaddingVertical={20}
-        onPressed={() => {
-          logout();
-        }}
+        onPressed={handleLogout}
       />
     </SafeAreaView>
   );

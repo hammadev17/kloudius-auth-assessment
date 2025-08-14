@@ -3,13 +3,13 @@ import { useContext, useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
-import AuthStack from './AuthStack';
-import HomeStack from './HomeStack';
+import AuthStack from './AuthStack.jsx';
+import HomeStack from './HomeStack.jsx';
 
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext.js';
 
 function AppNav() {
-  const { isLoading, userToken, isLoggedIn } = useContext(AuthContext);
+  const { isLoading, userToken } = useContext(AuthContext);
 
   if (isLoading) {
     return (

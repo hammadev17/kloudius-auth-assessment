@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
-import { LocalStorage } from '../hooks/LocalStorage';
-import User from '../models/User';
-import { LocalStorageKeys } from '../constants/Constants';
+import { LocalStorage } from '../hooks/LocalStorage.js';
+import User from '../models/User.js';
+import { LocalStorageKeys } from '../constants/Constants.js';
 
 export const AuthContext = createContext();
 
@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     try {
       let value: User = JSON.parse(await getItem(LocalStorageKeys.user));
-      console.log('user: ' + value);
       if (value == null || value.email !== email) {
+        console.log('inside register');
         let newUser: User = {
           id: '1',
           email: email,
@@ -27,13 +27,12 @@ export const AuthProvider = ({ children }) => {
         await storeItem(LocalStorageKeys.userToken, newUser.authToken);
         setUserToken(newUser.authToken);
         setUser(newUser);
-      } else if (value.email == email) {
+      } else if (value.email === email) {
         setErrorMessage('Email is already registered!!!');
       }
     } catch (e) {
-      console.log('catch: ' + e);
       setIsLoading(false);
-      throw 'register error: ' + e;
+      throw e;
     }
     setIsLoading(false);
   };
@@ -42,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     try {
       let value: User = JSON.parse(await getItem(LocalStorageKeys.user));
-      if (value !== null && email == value.email) {
+      if (value !== null && email === value.email) {
         value.authToken = 'sdjhfbjsd';
         await storeItem(LocalStorageKeys.user, JSON.stringify(value));
         await storeItem(LocalStorageKeys.userToken, value.authToken);
@@ -58,11 +57,21 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   };
 
-  const logout = () => {
-    setUserToken(null);
-    removeItem(LocalStorageKeys.userToken);
-    setIsLoading(false);
-    console.log('user logged out successfull!!');
+  const logout = async () => {
+    try {
+      let value: User = JSON.parse(await getItem(LocalStorageKeys.user));
+      if (value !== null) {
+        value.authToken = null;
+        await storeItem(LocalStorageKeys.user, JSON.stringify(value));
+        removeItem(LocalStorageKeys.userToken);
+        setUserToken(null);
+        setUser(value);
+        console.log('user logged out successfull!!');
+      }
+      setIsLoading(false);
+    } catch (e) {
+      throw e;
+    }
   };
 
   const isLoggedIn = async () => {

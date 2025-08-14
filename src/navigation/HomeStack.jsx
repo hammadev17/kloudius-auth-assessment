@@ -1,10 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import DashboardSreen from '../screens/post_login/Dashboard';
+import DashboardSreen from '../screens/post_login/dashboard.jsx';
 const NavStack = createNativeStackNavigator();
 
-const AuthStack = () => {
+const HomeStack = () => {
   return (
     <NavStack.Navigator>
       <NavStack.Screen
@@ -16,4 +16,4 @@ const AuthStack = () => {
   );
 };
 
-export default AuthStack;
+export default HomeStack;
